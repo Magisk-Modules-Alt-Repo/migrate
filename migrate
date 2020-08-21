@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Written by Tyler Nijmeh (tytydraco @ GitHub)
+
+# Destination repository or organization
+DEST_REPO="https://github.com/Magisk-Modules-Alt-Repo"
+
+# Origin repo author
+REPO_USER="$1"
+
+# Origin repo name
+REPO_NAME="$2"
+
+# Log in red and exit
+err() {
+	echo -e "\e[91m[!] $@\e[39m"
+	exit 1
+}
+
+# Log in white and continue
+dbg() {
+	echo -e "[*] $@"
+}
+
+# Check if a git repo exists
+git_exists() {
+	git ls-remote "$1" &> /dev/null
+}
+
+# Bail if origin doesn't exist
+git_exists "http://github.com/$REPO_USER/$REPO_NAME"
+[[ $? -ne 0 ]] && err "$REPO_NAME does not exist on the $REPO_USER's repo. Exiting."
+
+# Bail if destination already exists
+git_exists "$DEST_REPO/$REPO_NAME"
+[[ $? -eq 0 ]] && err "$REPO_NAME already exists on destination repo. Exiting."
+
+# Bail if Git username and token env is unset
+[[ -z "$GIT_USER" ]] || [[ -z "$GIT_TOKEN" ]] &&
+	err "Environmental variables GIT_USER and GIT_TOKEN must be set. Exiting."
+
+# Fetch the description of the origin module
+DESCRIPTION=`curl -s							\
+	-u $GIT_USER:$GIT_TOKEN						\
+	-H "Accept: application/vnd.github.v3+json"			\
+	https://api.github.com/repos/$REPO_USER/$REPO_NAME | jq -r ".description"`
+
+# Create base repo on destination organization with [Mirror] descriptor
+curl -s									\
+	-u $GIT_USER:$GIT_TOKEN						\
+	-X POST								\
+	-H "Accept: application/vnd.github.v3+json"			\
+	https://api.github.com/orgs/Magisk-Modules-Alt-Repo/repos	\
+	-d '{"name":"'$REPO_NAME'","description":"[Mirror] '$DESCRIPTION'"}' > /dev/null
+
+# Clone mirror repo
+git clone --mirror "http://github.com/$REPO_USER/$REPO_NAME" base-repo
+
+# Push as a mirror (preserves all objects)
+git -C base-repo push --mirror "$DEST_REPO/$REPO_NAME"
+
+# Cleanup
+rm -rf base-repo
+
+dbg "Done. Mirrored to $DEST_REPO/$REPO_NAME."
