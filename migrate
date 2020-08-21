@@ -58,7 +58,7 @@ curl -s									\
 {
 	"name":"'"$REPO_NAME"'",
 	"description":"[Mirror] '"$DESCRIPTION"'"
-}' > /dev/null
+}'
 
 sleep 5
 
