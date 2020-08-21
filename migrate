@@ -54,7 +54,13 @@ curl -s									\
 	-X POST								\
 	-H "Accept: application/vnd.github.v3+json"			\
 	https://api.github.com/orgs/Magisk-Modules-Alt-Repo/repos	\
-	-d '{"name":"'$REPO_NAME'","description":"[Mirror] '$DESCRIPTION'"}' > /dev/null
+	-d '{"name":"'$REPO_NAME'","description":"[Mirror] '$DESCRIPTION'"}'
+
+sleep 5
+
+# Bail if destination does not exist
+git_exists "$DEST_REPO/$REPO_NAME"
+[[ $? -ne 0 ]] && err "$REPO_NAME not found on destination repo. Exiting."
 
 # Clone mirror repo
 git clone --mirror "http://github.com/$REPO_USER/$REPO_NAME" base-repo
