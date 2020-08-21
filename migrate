@@ -26,6 +26,10 @@ git_exists() {
 	git ls-remote "$1" &> /dev/null
 }
 
+# Bail if origin username and repo name are unset
+[[ -z "$REPO_USER" ]] || [[ -z "$REPO_NAME" ]] &&
+	err "Invalid usage. Exiting."
+
 # Bail if origin doesn't exist
 git_exists "http://github.com/$REPO_USER/$REPO_NAME"
 [[ $? -ne 0 ]] && err "$REPO_NAME does not exist on the $REPO_USER's repo. Exiting."
@@ -34,7 +38,7 @@ git_exists "http://github.com/$REPO_USER/$REPO_NAME"
 git_exists "$DEST_REPO/$REPO_NAME"
 [[ $? -eq 0 ]] && err "$REPO_NAME already exists on destination repo. Exiting."
 
-# Bail if Git username and token env is unset
+# Bail if Git username and token are unset
 [[ -z "$GIT_USER" ]] || [[ -z "$GIT_TOKEN" ]] &&
 	err "Environmental variables GIT_USER and GIT_TOKEN must be set. Exiting."
 
