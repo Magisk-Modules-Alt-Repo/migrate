@@ -1,0 +1,11 @@
+name: Update Mirror
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update mirrored repo
+        uses: actions/checkout@v2
+      - run: git remote update --prune

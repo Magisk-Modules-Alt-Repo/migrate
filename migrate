@@ -61,4 +61,20 @@ git -C base-repo push --mirror "$DEST_REPO/$REPO_NAME"
 # Cleanup
 rm -rf base-repo
 
+# Reclone as an actual repo
+git clone "$DEST_REPO/$REPO_NAME" base-repo-v2
+
+# Copy our workflow to auto-update the mirror
+cp -r extra/. base-repo-v2/
+
+# Commit
+git -C base-repo-v2 add .
+git -C base-repo-v2 commit -sam "AUTOMATED: Add automatic mirror fetching action"
+
+# Push
+git -C base-repo-v2 push
+
+# Cleanup
+rm -rf base-repo-v2
+
 dbg "Done. Mirrored to $DEST_REPO/$REPO_NAME."
