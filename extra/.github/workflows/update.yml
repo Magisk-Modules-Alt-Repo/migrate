@@ -1,4 +1,4 @@
-name: Update Mirror
+name: Keep mirror up-to-date with original repo
 on:
   schedule:
     - cron: '*/30 * * * *'
