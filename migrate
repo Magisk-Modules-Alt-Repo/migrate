@@ -54,7 +54,11 @@ curl -s									\
 	-X POST								\
 	-H "Accept: application/vnd.github.v3+json"			\
 	https://api.github.com/orgs/Magisk-Modules-Alt-Repo/repos	\
-	-d '{"name":"'$REPO_NAME'","description":"[Mirror] '$DESCRIPTION'"}'
+	-d '
+{
+	"name":"'"$REPO_NAME"'",
+	"description":"[Mirror] '"$DESCRIPTION"'"
+}' > /dev/null
 
 sleep 5
 
