@@ -52,8 +52,11 @@ git_exists() {
 }
 
 # Bail if origin username and repo name are unset
-[[ -z "$REPO_USER" ]] || [[ -z "$REPO_NAME" ]] &&
-	err "Invalid usage. Exiting."
+if [[ -z "$REPO_USER" ]] || [[ -z "$REPO_NAME" ]]
+then
+	usage
+	exit 1
+fi
 
 # Bail if origin doesn't exist
 git_exists "http://github.com/$REPO_USER/$REPO_NAME"
