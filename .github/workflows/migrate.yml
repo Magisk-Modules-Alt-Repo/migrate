@@ -2,10 +2,14 @@ name: Migrate
 on:
   workflow_dispatch:
     inputs:
-      user:
-        description: 'Username'
-      repo:
+      repo_user:
+        description: 'Repo Username'
+      repo_name:
         description: 'Repo Name'
+      git_user:
+        description: 'Authorized GitHub Username'
+      git_token:
+        description: 'Authorized GitHub Token'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,6 +19,6 @@ jobs:
       - name: Migrate
         id: migrate
         run: |
-          export GIT_USER="Magisk-Modules-Alt-Repo"
-          export GIT_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          ./migrate ${{ github.event.inputs.user }} ${{ github.event.inputs.repo }}
+          export GIT_USER="${{ github.event.inputs.git_user }}"
+          export GIT_TOKEN="${{ github.event.inputs.git_token }}"
+          ./migrate ${{ github.event.inputs.repo_user }} ${{ github.event.inputs.repo_name }}
