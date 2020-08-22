@@ -10,6 +10,9 @@ on:
         description: 'Authorized GitHub Username'
       git_token:
         description: 'Authorized GitHub Token'
+      mirror:
+        description: 'Clone (0) or Mirror (1)'
+        default: 0
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,4 +26,7 @@ jobs:
           git config --global user.name "[Migrate] ${{ github.event.inputs.git_user }}"
           export GIT_USER="${{ github.event.inputs.git_user }}"
           export GIT_TOKEN="${{ github.event.inputs.git_token }}"
-          ./migrate ${{ github.event.inputs.repo_user }} ${{ github.event.inputs.repo_name }}
+
+          [[ "${{ github.event.inputs.mirror }}" -eq 1 ]] && MIRROR="-m"
+
+          ./migrate $MIRROR ${{ github.event.inputs.repo_user }} ${{ github.event.inputs.repo_name }}
