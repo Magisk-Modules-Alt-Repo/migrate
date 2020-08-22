@@ -1,0 +1,20 @@
+name: Migrate
+on:
+  workflow_dispatch:
+    inputs:
+      user:
+        description: 'Username'
+      repo:
+        description: 'Repo Name'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Migrate
+        id: migrate
+        run: |
+          export GIT_USER="Magisk-Modules-Alt-Repo"
+          export GIT_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          ./migrate ${{ github.event.inputs.user }} ${{ github.event.inputs.repo }}
