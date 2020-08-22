@@ -14,3 +14,6 @@ Additionally, you must export two environmental variables:
 * `GIT_TOKEN`: Your GitHub token / password
 
 These are required to create the repository via the Git API. Ensure your specified user is privileged enough to do this.
+
+# GitHub Action
+This repo has a GitHub Action to allow devs to mirror their repositories on-the-fly. **DO NOT USE THIS HERE**. Your personal access token or password will be saved in the Action log. It is much, *much* saver to fork this repository to your own private account and use it there.
