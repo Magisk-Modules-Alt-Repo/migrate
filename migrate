@@ -42,6 +42,9 @@ git_exists "$DEST_REPO/$REPO_NAME"
 [[ -z "$GIT_USER" ]] || [[ -z "$GIT_TOKEN" ]] &&
 	err "Environmental variables GIT_USER and GIT_TOKEN must be set. Exiting."
 
+# Destination repository or organization with authentication
+DEST_REPO_AUTH="https://$GIT_USER:$GIT_TOKEN@github.com/Magisk-Modules-Alt-Repo"
+
 # Fetch the description of the origin module
 DESCRIPTION=`curl -s							\
 	-u $GIT_USER:$GIT_TOKEN						\
@@ -70,7 +73,7 @@ git_exists "$DEST_REPO/$REPO_NAME"
 git clone --mirror "http://github.com/$REPO_USER/$REPO_NAME" base-repo
 
 # Push as a mirror (preserves all objects)
-git -C base-repo push --mirror "$DEST_REPO/$REPO_NAME"
+git -C base-repo push --mirror "$DEST_REPO_AUTH/$REPO_NAME"
 
 # Cleanup
 rm -rf base-repo
@@ -86,7 +89,7 @@ git -C base-repo-v2 add .
 git -C base-repo-v2 commit -sam "AUTOMATED: Add automatic mirror fetching action"
 
 # Push
-git -C base-repo-v2 push
+git -C base-repo-v2 push "$DEST_REPO_AUTH/$REPO_NAME"
 
 # Cleanup
 rm -rf base-repo-v2
