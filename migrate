@@ -51,6 +51,9 @@ DESCRIPTION=`curl -s							\
 	-H "Accept: application/vnd.github.v3+json"			\
 	https://api.github.com/repos/$REPO_USER/$REPO_NAME | jq -r ".description"`
 
+# Use no description rather than 'null'
+[[ "$DESCRIPTION" == "null" ]] && DESCRIPTION=""
+
 # Create base repo on destination organization with [Mirror] descriptor
 curl -s									\
 	-u $GIT_USER:$GIT_TOKEN						\
