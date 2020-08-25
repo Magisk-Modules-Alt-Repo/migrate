@@ -18,8 +18,8 @@ jobs:
       - name: Migrate
         id: migrate
         run: |
-          git config --global user.email "${{ github.event.inputs.git_user }}@users.noreply.github.com"
-          git config --global user.name "[Migrate] ${{ github.event.inputs.git_user }}"
+          git config --global user.email "migrate@users.noreply.github.com"
+          git config --global user.name "mmar-migrate"
           export GIT_USER="${{ secrets.AUTH_NAME }}"
           export GIT_TOKEN="${{ secrets.AUTH_KEY }}"
 
