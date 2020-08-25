@@ -18,4 +18,4 @@ These are required to create the repository via the Git API. Ensure your specifi
 If you want to clone a repo without bundling the 30m automatic update workflow, omit the `-m` flag. This will simply migrate the repo. This option is ideal for approving `[Module]` submissions.
 
 # GitHub Action
-This repo has a GitHub Action to allow devs to mirror their repositories on-the-fly. **DO NOT USE THIS HERE**. Your personal access token or password will be saved in the Action log. It is much, *much* saver to fork this repository to your own private account and use it there.
+This repo has a GitHub Action to allow devs to mirror their repositories on-the-fly. This is currently only for moderators with repo access. If you decide to fork this repo, make sure you set the repo secrets AUTH_NAME (GitHub username) and AUTH_KEY (GitHub token / password).
