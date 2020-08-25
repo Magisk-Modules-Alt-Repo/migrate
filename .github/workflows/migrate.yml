@@ -6,10 +6,6 @@ on:
         description: 'Repo Username'
       repo_name:
         description: 'Repo Name'
-      git_user:
-        description: 'Authorized GitHub Username'
-      git_token:
-        description: 'Token Secret Name'
       mirror:
         description: 'Clone (0) or Mirror (1)'
         default: 0
@@ -24,8 +20,8 @@ jobs:
         run: |
           git config --global user.email "${{ github.event.inputs.git_user }}@users.noreply.github.com"
           git config --global user.name "[Migrate] ${{ github.event.inputs.git_user }}"
-          export GIT_USER="${{ github.event.inputs.git_user }}"
-          export GIT_TOKEN="${{ secrets.${{ github.event.inputs.git_token }} }}"
+          export GIT_USER="${{ secrets.AUTH_NAME }}"
+          export GIT_TOKEN="${{ secrets.AUTH_KEY }}"
 
           [[ "${{ github.event.inputs.mirror }}" -eq 1 ]] && MIRROR="-m"
 
