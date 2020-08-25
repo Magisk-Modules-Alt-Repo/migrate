@@ -9,7 +9,7 @@ on:
       git_user:
         description: 'Authorized GitHub Username'
       git_token:
-        description: 'Authorized GitHub Token'
+        description: 'Token Secret Name'
       mirror:
         description: 'Clone (0) or Mirror (1)'
         default: 0
@@ -25,7 +25,7 @@ jobs:
           git config --global user.email "${{ github.event.inputs.git_user }}@users.noreply.github.com"
           git config --global user.name "[Migrate] ${{ github.event.inputs.git_user }}"
           export GIT_USER="${{ github.event.inputs.git_user }}"
-          export GIT_TOKEN="${{ github.event.inputs.git_token }}"
+          export GIT_TOKEN="${{ secrets.${{ github.event.inputs.git_token }} }}"
 
           [[ "${{ github.event.inputs.mirror }}" -eq 1 ]] && MIRROR="-m"
 
