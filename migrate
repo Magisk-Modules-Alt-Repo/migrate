@@ -35,6 +35,9 @@ REPO_USER="$1"
 # Origin repo name
 REPO_NAME="$2"
 
+# Origin repo URL
+MAIN_REPO_URL="http://github.com/$REPO_USER/$REPO_NAME"
+
 # Log in red and exit
 err() {
 	echo -e "\e[91m[!] $@\e[39m"
@@ -59,7 +62,7 @@ then
 fi
 
 # Bail if origin doesn't exist
-git_exists "http://github.com/$REPO_USER/$REPO_NAME"
+git_exists "$MAIN_REPO_URL"
 [[ $? -ne 0 ]] && err "$REPO_NAME does not exist on the $REPO_USER's repo. Exiting."
 
 # Bail if destination already exists
@@ -104,7 +107,7 @@ git_exists "$DEST_REPO/$REPO_NAME"
 [[ $? -ne 0 ]] && err "$REPO_NAME not found on destination repo. Exiting."
 
 # Clone mirror repo
-git clone --mirror "http://github.com/$REPO_USER/$REPO_NAME" base-repo
+git clone --mirror "$MAIN_REPO_URL" base-repo
 
 # Push as a mirror (preserves all objects)
 git -C base-repo push --mirror "$DEST_REPO_AUTH/$REPO_NAME"
@@ -120,6 +123,7 @@ then
 
 	# Copy our workflow to auto-update the mirror
 	cp -r extra/. base-repo-v2/
+	sed -i "s/MAIN_REPO_URL/$MAIN_REPO_URL/g" base-repo-v2/.github/workflows/update.yml
 
 	# Commit
 	git -C base-repo-v2 add .
