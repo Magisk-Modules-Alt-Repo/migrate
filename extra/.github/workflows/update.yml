@@ -8,4 +8,9 @@ jobs:
     steps:
       - name: Update mirrored repo
         uses: actions/checkout@v2
-      - run: git remote update --prune
+      - run: |
+          LAST_COMMIT_ID=`git rev-parse HEAD`
+          git fetch "MAIN_REPO_URL"
+          git reset --hard FETCH_HEAD
+          git cherry-pick "$LAST_COMMIT_ID"
+          git push --force
