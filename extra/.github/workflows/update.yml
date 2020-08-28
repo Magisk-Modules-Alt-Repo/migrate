@@ -9,6 +9,8 @@ jobs:
       - name: Update mirrored repo
         uses: actions/checkout@v2
       - run: |
+          git config --global user.email "mmar-migrate@users.noreply.github.com"
+          git config --global user.name "mmar-migrate"
           LAST_COMMIT_ID=`git rev-parse HEAD`
           git fetch "MAIN_REPO_URL"
           git reset --hard FETCH_HEAD
