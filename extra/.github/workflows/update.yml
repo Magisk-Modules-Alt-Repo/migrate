@@ -17,4 +17,4 @@ jobs:
           curl https://raw.githubusercontent.com/Magisk-Modules-Alt-Repo/mmar-migrate/master/extra/.github/workflows/update.yml > .github/workflows/update.yml
           git add .
           git commit -sam "AUTOMATED: Add automatic mirror fetching action"
-          git push --force
+          git push --force https://"${{ secrets.AUTH_NAME }}":"${{ secrets.AUTH_KEY }}"@github.com/Magisk-Modules-Alt-Repo/NEW_REPO_NAME
