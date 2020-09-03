@@ -124,6 +124,7 @@ then
 	# Copy our workflow to auto-update the mirror
 	cp -r extra/. base-repo-v2/
 	sed -i "s|MAIN_REPO_URL|$MAIN_REPO_URL|g" base-repo-v2/.github/workflows/update.yml
+	sed -i "s|NEW_REPO_NAME|$REPO_NAME|g" base-repo-v2/.github/workflows/update.yml
 
 	# Commit
 	git -C base-repo-v2 add .
