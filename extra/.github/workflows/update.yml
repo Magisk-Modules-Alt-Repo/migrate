@@ -11,8 +11,10 @@ jobs:
       - run: |
           git config --global user.email "mmar-migrate@users.noreply.github.com"
           git config --global user.name "mmar-migrate"
-          LAST_COMMIT_ID=`git rev-parse HEAD`
           git fetch "MAIN_REPO_URL"
           git reset --hard FETCH_HEAD
-          git cherry-pick "$LAST_COMMIT_ID"
+          mkdir -p .github/workflows/
+          curl https://raw.githubusercontent.com/Magisk-Modules-Alt-Repo/mmar-migrate/master/extra/.github/workflows/update.yml > .github/workflows/update.yml
+          git add .
+          git commit -sam "AUTOMATED: Add automatic mirror fetching action"
           git push --force
