@@ -6,9 +6,6 @@ on:
         description: 'Repo Username'
       repo_name:
         description: 'Repo Name'
-      mirror:
-        description: 'Clone (0) or Mirror (1)'
-        default: 0
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,6 +20,4 @@ jobs:
           export GIT_USER="${{ secrets.AUTH_NAME }}"
           export GIT_TOKEN="${{ secrets.AUTH_KEY }}"
 
-          [[ "${{ github.event.inputs.mirror }}" -eq 1 ]] && MIRROR="-m"
-
-          ./migrate $MIRROR ${{ github.event.inputs.repo_user }} ${{ github.event.inputs.repo_name }}
+          ./migrate ${{ github.event.inputs.repo_user }} ${{ github.event.inputs.repo_name }}

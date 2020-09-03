@@ -12,11 +12,8 @@ Options:
 "
 }
 
-while getopts ":dm" opt; do
+while getopts ":d" opt; do
 	case $opt in
-		m)
-			MIRROR=1
-			;;
 		h)
 			usage
 			exit 0
@@ -85,9 +82,6 @@ DESCRIPTION=`curl -s							\
 # Use no description rather than 'null'
 [[ "$DESCRIPTION" == "null" ]] && DESCRIPTION=""
 
-# Change description if we are a mirror repo
-[[ "$MIRROR" -eq 1 ]] && DESCRIPTION="[Mirror] $DESCRIPTION"
-
 # Create base repo on destination organization with [Mirror] descriptor
 curl -s									\
 	-u $GIT_USER:$GIT_TOKEN						\
@@ -114,27 +108,5 @@ git -C base-repo push --mirror "$DEST_REPO_AUTH/$REPO_NAME"
 
 # Cleanup
 rm -rf base-repo
-
-# Add workflow if we are mirroring
-if [[ "$MIRROR" -eq 1 ]]
-then
-	# Reclone as an actual repo
-	git clone "$DEST_REPO/$REPO_NAME" base-repo-v2
-
-	# Copy our workflow to auto-update the mirror
-	cp -r extra/. base-repo-v2/
-	sed -i "s|MAIN_REPO_URL|$MAIN_REPO_URL|g" base-repo-v2/.github/workflows/update.yml
-	sed -i "s|NEW_REPO_NAME|$REPO_NAME|g" base-repo-v2/.github/workflows/update.yml
-
-	# Commit
-	git -C base-repo-v2 add .
-	git -C base-repo-v2 commit -sam "AUTOMATED: Add automatic mirror fetching action"
-
-	# Push
-	git -C base-repo-v2 push "$DEST_REPO_AUTH/$REPO_NAME"
-
-	# Cleanup
-	rm -rf base-repo-v2
-fi
 
 dbg "Done. Migrated to $DEST_REPO/$REPO_NAME."
