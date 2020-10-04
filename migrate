@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
 # Written by Tyler Nijmeh (tytydraco @ GitHub)
 
-# Destination repository or organization
-DEST_REPO="https://github.com/Magisk-Modules-Alt-Repo"
-
 usage() {
-	echo -n "Usage: `basename $0` [OPTIONS] <REPO-USER> <REPO-NAME>
-Options:
-  -m			Mirror instead of clone (add cron workflow)
-  -h			Show usage
-"
+	echo "Usage: `basename $0` <REPO-USER> <REPO-NAME> <DEST-REPO>"
 }
 
 # Origin repo author
@@ -17,6 +10,9 @@ REPO_USER="$1"
 
 # Origin repo name
 REPO_NAME="$2"
+
+# Destination repository or organization
+DEST_REPO="$3"
 
 # Origin repo URL
 MAIN_REPO_URL="http://github.com/$REPO_USER/$REPO_NAME"
