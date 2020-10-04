@@ -4,7 +4,7 @@ Tools and information for mirroring existing repositories to the Alt-Repo.
 # Usage
 Use the following command to clone a specified repository to the Magisk-Modules-Alt-Repo.
 
-`./migrate <USERNAME> <REPONAME>`
+`./migrate <USERNAME> <REPONAME> <DESTREPO>`
 
 An organization name can be substituted for the username input field.
 
