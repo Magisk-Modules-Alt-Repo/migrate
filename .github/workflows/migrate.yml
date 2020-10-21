@@ -18,5 +18,4 @@ jobs:
           git config --global user.name "mmar-migrate"
           export GIT_USER="${{ secrets.AUTH_NAME }}"
           export GIT_TOKEN="${{ secrets.AUTH_KEY }}"
-
          ./migrate ${{ github.event.inputs.repo_user }} ${{ github.event.inputs.repo_name }} https://github.com/Magisk-Modules-Alt-Repo
